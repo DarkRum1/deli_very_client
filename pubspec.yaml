@@ -29,7 +29,13 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-#  email_validator: '^2.1.16'
+  mysql1:
+  google_fonts:
+  flutter_svg:
+  persistent_bottom_nav_bar:
+  flutter_map:
+  latlong2:
+  mask_text_input_formatter:
   flutter:
     sdk: flutter
 
@@ -64,6 +70,7 @@ flutter:
   assets:
     - assets/
     - assets/images/
+    - assets/images/Logo.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

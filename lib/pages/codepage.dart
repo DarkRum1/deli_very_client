@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class CodePage extends StatefulWidget {
   const CodePage({Key? key}) : super(key: key);
@@ -24,11 +25,10 @@ class _CodePageState extends State<CodePage> {
               Align(
                 alignment: Alignment.center,
                 child: SizedBox(
-                  width: 150,
-                  child: Image.asset('assets/images/log.png'),
+                    child: SvgPicture.asset('assets/images/Logo.svg')
                 ),
               ),
-              const Padding(padding: EdgeInsets.only(bottom: 20)),
+              const Padding(padding: EdgeInsets.only(bottom: 50)),
               const Center(
                 child: Text('Введите полученный\nкод ниже',
                   textAlign: TextAlign.center,
@@ -43,15 +43,20 @@ class _CodePageState extends State<CodePage> {
                 textAlign: TextAlign.center,
                 controller: _codecontroller,
                 keyboardType: TextInputType.number,
-                cursorColor: const Color(0xFF616161),
-                decoration: const InputDecoration(
+                cursorColor: const Color(0xFF00C27C),
+                decoration: InputDecoration(
                   hintText: '- - - - - -',
                   hintStyle: TextStyle(
                     color: Colors.grey,
                     fontSize: 24,
                   ),
-                  focusedBorder: UnderlineInputBorder(
+                  border: OutlineInputBorder(
                     borderSide: BorderSide(color: Color(0xFF616161)),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFF00C27C)),
+                    borderRadius: BorderRadius.circular(15),
                   ),
               ),
                 validator: (value) =>
@@ -66,7 +71,7 @@ class _CodePageState extends State<CodePage> {
               ),
               const Center(
                 child: Text('отправить еще раз', style: TextStyle(
-                  color: Color(0xFF272727),
+                  color: Color(0xFF00C27C),
                   fontSize: 13,
                   decoration: TextDecoration.underline,
                 ),),
@@ -77,19 +82,15 @@ class _CodePageState extends State<CodePage> {
             child: ElevatedButton(
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
-                  Navigator.pushNamed(context, 'MainScreen');
+                  Navigator.pushNamed(context, 'PasswordPage');
                 }
               },
               style: ElevatedButton.styleFrom(
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20.0),
-                    topRight: Radius.circular(0),
-                    bottomLeft: Radius.circular(0),
-                    bottomRight: Radius.circular(20.0),
-                  ),
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8)
                 ),
-                backgroundColor: const Color(0xFF616161),
+                backgroundColor: const Color(0xFF00C27C),
                 fixedSize: const Size(double.infinity, 50),
               ),
               child: const Text('Продолжить', style: TextStyle(

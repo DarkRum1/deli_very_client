@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({Key? key}) : super(key: key);
@@ -10,14 +11,20 @@ class RegistrationPage extends StatefulWidget {
 
 final _formKey = GlobalKey<FormState>();
 bool _checkedvalue = true;
-var _emailcontroller = TextEditingController();
+var _phonecontroller = TextEditingController();
+
+var maskFormatter = MaskTextInputFormatter(
+  mask: '+# (###) ###-##-##',
+  filter: { "#": RegExp(r'[0-9]')},
+  type: MaskAutoCompletionType.lazy
+);
 
 class _RegistrationPageState extends State<RegistrationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 30.0),
+          padding: const EdgeInsets.only(right: 30, left: 30, top: 45),
           child: Form(
             key: _formKey,
             child: Column(
@@ -27,27 +34,25 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 SizedBox(
                   width: double.infinity,
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(
-                        width: 120,
+                        width: 152,
                         height: 48,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(0)
+                            elevation: 0,
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(topLeft: Radius.circular(8), bottomLeft: Radius.circular(8))
                               ),
                               backgroundColor: const Color(0xFFFFFFFF),
-                            side: const BorderSide(
-                                width: 1.5,
-                                color: Color(0xFF616161)
-                            ),
                           ),
                           onPressed: () {
                             Navigator.pushNamed(context, 'login');
                           },
                           child: const Text('Вход', style: TextStyle(
                             fontSize: 16,
-                            color: Color(0xFF616161),
+                            color: Color(0xFFD0D2D2),
                           ),
                           ),
                         ),
@@ -57,10 +62,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         height: 48,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
+                            elevation: 0,
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(0)
+                                borderRadius: BorderRadius.only(topRight: Radius.circular(8), bottomRight: Radius.circular(8))
                             ),
-                            backgroundColor: const Color(0xFF616161),
+                            backgroundColor: const Color(0xFF00C27C),
                           ),
                           onPressed: () {
                             //
@@ -79,49 +85,56 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 Align(
                   alignment: Alignment.center,
                   child: SizedBox(
-                    width: 150,
-                    child: Image.asset('assets/images/log.png'),
+                      child: SvgPicture.asset('assets/images/Logo.svg')
                   ),
                 ),
-                const Padding(padding: EdgeInsets.only(bottom: 20.0)),
-                const Text('Добро пожаловать!', style: TextStyle(
-                  fontSize: 28,
+                const Padding(padding: EdgeInsets.only(bottom: 50.0)),
+                const Text('Начнем регистрацию!', style: TextStyle(
+                  color: Color(0xFF00C27C),
+                  fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
                 ),
-                const Padding(padding: EdgeInsets.only(bottom: 24.0)),
-                const Text('Ваше email\nдля регистрации: ',
+                const Padding(padding: EdgeInsets.only(bottom: 10.0)),
+                const Text('Введите данные для регистрации: ',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Color(0xFF272727),
-                    fontSize: 20,
+                    fontSize: 18,
                   ),
                 ),
                 const Padding(padding: EdgeInsets.only(bottom: 20)),
                 TextFormField(
-                  controller: _emailcontroller,
-                  keyboardType: TextInputType.emailAddress,
-                  cursorColor: const Color(0xFF616161),
-                  decoration: const InputDecoration(
-                    hintText: 'Введите email',
+                  inputFormatters: [maskFormatter],
+                  controller: _phonecontroller,
+                  keyboardType: TextInputType.phone,
+                  cursorColor: const Color(0xFF00C27C),
+                  decoration: InputDecoration(
+                    hintText: 'Введите номер телефона',
                     hintStyle: TextStyle(
+                      fontSize: 14,
                       color: Colors.grey,
                     ),
-                    focusedBorder: UnderlineInputBorder(
+                    border: OutlineInputBorder(
                       borderSide: BorderSide(color: Color(0xFF616161)),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFF00C27C)),
+                      borderRadius: BorderRadius.circular(15),
                     ),
                   ),
                   validator: (value) =>
                   value == null || value.isEmpty ? '' : null,
                 ),
                 const Padding(padding: EdgeInsets.only(bottom: 13)),
-                const Text('В течении 5 минут вам придет письмо\nдля подтверждения почты!',
+                const Text('В течении 5 минут вам поступит СМС\nс кодом подтверждения!',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Color(0xFF979797),
                   ),
                 ),
-                const Padding(padding: EdgeInsets.only(bottom: 25)),
+                const Padding(padding: EdgeInsets.only(bottom: 50)),
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
@@ -131,15 +144,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20.0),
-                          topRight: Radius.circular(0),
-                          bottomLeft: Radius.circular(0),
-                          bottomRight: Radius.circular(20.0),
-                        ),
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8)
                       ),
-                      backgroundColor: const Color(0xFF616161),
+                      backgroundColor: const Color(0xFF00C27C),
                       fixedSize: const Size(double.infinity, 50),
                     ),
                     child: const Text('Отправить', style: TextStyle(
@@ -156,7 +165,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       child: Container(
                         width: 210,
                         child: CheckboxListTile(
-                          activeColor: Color(0xFF616161),
+                          activeColor: Color(0xFF00C27C),
                           contentPadding: EdgeInsets.zero,
                           title: RichText(
                             // textAlign: TextAlign.center,
@@ -168,7 +177,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                               children: [
                                 TextSpan(text: 'Согласен с '),
                                 TextSpan(text: 'правилами', style: (TextStyle(
-                                  color: Color(0xFF616161),
+                                  color: Color(0xFF00C27C),
                                   fontSize: 14,
                                   decoration: TextDecoration.underline,
                                 )))
